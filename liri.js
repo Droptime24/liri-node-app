@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+var axios = require("axios");
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api")
 var spotify = new Spotify(keys.spotify);
@@ -10,8 +12,8 @@ function handler(operation){
         case 'concert-this':
             console.log('concert-this');
             break;
-        case 'spotify-this-song':
-            console.log('spotify-this-song')
+        case 'spotify-this':
+            songs()
         case 'movie-this':
             console.log('movie-this');
             // expected output: "Mangoes and papayas are $2.79 a pound."
@@ -22,3 +24,7 @@ function handler(operation){
 }
 
 handler(operation);
+
+axios.get();
+
+
