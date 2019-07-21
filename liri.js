@@ -3,7 +3,7 @@ var moment = require('moment');
 var axios = require('axios');
 var keys = require('./keys.js');
 var Spotify = require('node-spotify-api')
-// var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 var fs = require('fs')
 
 console.log(process.argv[2])
@@ -38,48 +38,48 @@ function findConcert() {
         // console.log(response)
         var stuff = response.data;
         // console.log(stuff)
-        for (let i = 0; i < stuff.length; i++) {
-            const yellow = stuff[i];
-            console.log(yellow.venue.name)
-            console.log(yellow.datetime)
+        for (var i = 0; i < stuff.length; i++) {
+            const concert = stuff[i];
 
+            console.log(`------------------------------------------------------`);
+            console.log(`Artist: ${concert.lineup}`);
+            console.log("Date: " + moment(concert.datetime, ["YYYY MM DD T HH:mm", "12-25-1995", "MM-DD-YYYY", "YYYY-MM-DD", "DD MMM - DD MMM"]).format("LLL"));
+            console.log(`Venue Location: ${concert.venue.name}`)
+            console.log(`City: ${concert.venue.city}`);
+            console.log(`State: ${concert.venue.region}`);
+            console.log(`Country: ${concert.venue.country}`);
+            console.log(`------------------------------------------------------`);
         }
-        // console.log(response.data)
-        console.log(stuff.offers)
-
-
-
     });
 };
 
 // spotify
-function searchSong() {
-    spotify.search(
-        {
-            type: 'string',
-            query: 'artist'
-        })
-        .then(function (response) {
-            console.log(response);
+function searchSong() {  
+spotify.request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
+        .then(function (data) {
+            console.log(data);
         })
         .catch(function (err) {
-            console.log(err);
+            console.error('Error occurred: ' + err);
         });
-};
+    }
+
 
 
 function findMovie() {
 
     axios.get(`http://www.omdbapi.com/?t=${search}&y=&plot=short&apikey=trilogy`).then(
         function (response) {
+            console.log(`------------------------------------------------------`);
             console.log("Title of the movie: " + response.data.Title);
             console.log("Year the movie came out: " + moment(response.data.Released, 'DD MMM YYYY').format('LL'));
-            console.log("The movie's rating is: " + response.data.imdbRating);
-            console.log("Rotten Tomatoes Rating of the movie: " + response.data.Value);
+            console.log("IMDB Rating of the movie " + response.data.imdbRating);
+            console.log("Rotten Tomatoes Rating of the movie: " + response.data.Metascore + "/100");
             console.log("Country where the movie was produced: " + response.data.Country);
             console.log("Language of the movie: " + response.data.Language);
             console.log("Plot of the movie: " + response.data.Plot);
             console.log("Actors in the movie: " + response.data.Actors);
+            console.log(`------------------------------------------------------`);
 
         })
         .catch(function (error) {
@@ -94,7 +94,7 @@ function findMovie() {
 
                 console.log(error.request);
             } else {
-                // Something happened in setting up the request that triggered an Error
+
                 console.log("Error", error.message);
             }
             console.log(error.config)
