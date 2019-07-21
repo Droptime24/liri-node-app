@@ -4,7 +4,7 @@ var axios = require('axios');
 var keys = require('./keys.js');
 var Spotify = require('node-spotify-api')
 var spotify = new Spotify(keys.spotify);
-var fs = require('fs')
+var fs = newFunction()
 
 console.log(process.argv[2])
 
@@ -31,6 +31,10 @@ switch (myCase) {
 }
 
 
+function newFunction() {
+    return require('fs');
+}
+
 // bands in town
 function findConcert() {
 
@@ -54,16 +58,18 @@ function findConcert() {
 };
 
 // spotify
-function searchSong() {  
-spotify.request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-        .then(function (data) {
-            console.log(data);
+function searchSong() {
+
+    spotify
+        .search({ type: 'track', query: 'All the Small Things' })
+        .then(function (response) {
+            console.log(response.items);
         })
         .catch(function (err) {
-            console.error('Error occurred: ' + err);
+            console.log(err);
         });
-    }
 
+};
 
 
 function findMovie() {
