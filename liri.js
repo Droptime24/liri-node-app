@@ -2,11 +2,10 @@ require('dotenv').config();
 var moment = require('moment');
 var axios = require('axios');
 var keys = require('./keys.js');
-var Spotify = require('node-spotify-api')
-var spotify = new Spotify(keys.spotify);
-var fs = newFunction()
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys);
 
-console.log(process.argv[2])
+// console.log(process.argv[2])
 
 var myCase = process.argv[2];
 var search = process.argv[3];
@@ -18,24 +17,23 @@ switch (myCase) {
         break;
 
     case 'spotify-this':
-        searchSong()
+        searchSong();
         break;
 
     case 'movie-this':
         findMovie();
         break;
 
+    default:
     case 'do-what-it-says':
         justDoIt()
         console.log('Does not compute!! Liri shutting down.');
+        break;
+
 }
 
 
-function newFunction() {
-    return require('fs');
-}
-
-// bands in town
+// bands in town concert search
 function findConcert() {
 
     axios.get(`https://rest.bandsintown.com/artists/${search}/events?app_id=codingbootcamp`).then(function (response) {
@@ -55,7 +53,7 @@ function findConcert() {
             console.log(`------------------------------------------------------`);
         }
     });
-};
+}
 
 // spotify
 function searchSong() {
@@ -63,13 +61,17 @@ function searchSong() {
     spotify
         .search({ type: 'track', query: 'All the Small Things' })
         .then(function (response) {
-            console.log(response.items);
+            console.log(response)
+            var tracks = response;
+            for (var i = 0; i < response.length; i++) {
+                console.log(tracks[i])
+            }
         })
+
         .catch(function (err) {
             console.log(err);
         });
-
-};
+    }
 
 
 function findMovie() {
@@ -105,4 +107,10 @@ function findMovie() {
             }
             console.log(error.config)
         });
+}
+
+// if all other call fail, run this function. 
+function justDoIt() {
+    console.log("Failed")
+
 }
