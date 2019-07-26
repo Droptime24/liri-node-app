@@ -5,7 +5,7 @@ var keys = require('./keys.js');
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys);
 
-// console.log(process.argv[2])
+console.log(process.argv[2])
 
 var myCase = process.argv[2];
 var search = process.argv[3];
@@ -26,7 +26,7 @@ switch (myCase) {
 
     default:
     case 'do-what-it-says':
-        justDoIt()
+        justDoIt();
         console.log('Does not compute!! Liri shutting down.');
         break;
 
@@ -57,19 +57,22 @@ function findConcert() {
 
 // spotify
 function searchSong() {
+   
+spotify.request(`https://api.spotify.com/v1/track/`)
+        .then(function (data) {
+ 
+            console.log(data)
+            
+            
+            for (var i = 0; i < data.length; i++) {
+                const response = data[i];
+                console.log(response)
 
-    spotify
-        .search({ type: 'track', query: 'All the Small Things' })
-        .then(function (response) {
-            console.log(response)
-            var tracks = response;
-            for (var i = 0; i < response.length; i++) {
-                console.log(tracks[i])
-            }
+            }               
         })
 
         .catch(function (err) {
-            console.log(err);
+            console.error('Error occurred: ' + err);
         });
     }
 
