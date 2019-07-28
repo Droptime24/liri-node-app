@@ -32,7 +32,6 @@ switch (myCase) {
 
 }
 
-
 // bands in town concert search
 function findConcert() {
 
@@ -57,24 +56,43 @@ function findConcert() {
 
 // spotify
 function searchSong() {
-   
-spotify.request(`https://api.spotify.com/v1/track/`)
-        .then(function (data) {
- 
-            console.log(data)
-            
-            
+
+    spotify
+        .search({ type: 'track', query: search })
+        .then(function (response) {
+            var data = response.tracks.items;
+            // console.log(data)
+        
             for (var i = 0; i < data.length; i++) {
-                const response = data[i];
-                console.log(response)
-
-            }               
+                const results= data[i];
+                console.log(results.artist)
+            }
+            
         })
-
+    
         .catch(function (err) {
-            console.error('Error occurred: ' + err);
+            console.log(err);
+
         });
     }
+    
+   
+// spotify.request(type: 'track, ')
+//         .then(function (data) {
+ 
+//             console.log(data)
+            
+//             for (var i = 0; i < data[i].length; i++) {
+//                 const response = data;
+//                 console.log(response)
+
+//             }               
+//         })
+
+//         .catch(function (err) {
+//             console.error('Error occurred: ' + err);
+//         });
+    
 
 
 function findMovie() {
